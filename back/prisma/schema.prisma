@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Merchant {
+  id           Int          @id @default(autoincrement())
+  userId       Int
+  email        String       @unique
+  password     String
+  businessName String
+  contracts    Contract[]
+  games        Game[]
+
+  @@map("commercants")
+}
+
+model Contract {
+  id           Int          @id @default(autoincrement())
+  merchantId   Int
+  startDate    DateTime
+  endDate      DateTime
+  createdAt    DateTime     @default(now())
+  merchant     Merchant     @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@map("contrats")
+}
+
+model Game {
+  id           Int          @id @default(autoincrement())
+  merchantId   Int
+  title        String
+  description  String
+  startDate    DateTime
+  endDate      DateTime
+  merchant     Merchant     @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  promoCodes   PromoCode[]
+  participations GameParticipation[]
+
+  @@map("jeux")
+}
+
+model GameParticipation {
+  id                Int       @id @default(autoincrement())
+  userId            Int
+  gameId            Int
+  participationDate DateTime  @default(now())
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game              Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@map("user_jeux")
+}
+
+model PromoCode {
+  id            Int          @id @default(autoincrement())
+  code          String       @unique
+  description   String?
+  validUntil    DateTime
+  establishmentId Int
+  gameId        Int
+  game          Game         @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@map("codes_promo")
+}
+
+model User {
+  id             Int              @id @default(autoincrement())
+  email          String           @unique
+  password       String
+  phoneNumber    String?
+  firstName       String
+  lastName       String
+  userType       String
+  createdAt      DateTime         @default(now())
+  participations GameParticipation[]
+
+  @@map("users")
+}
