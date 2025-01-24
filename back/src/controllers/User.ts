@@ -56,7 +56,7 @@ export default class User {
   // Méthode d'enregistrement
   static register = async (req: Request, res: Response) => {
     const { email, password, firstName, lastName, phoneNumber } = req.body;
-
+    console.log('coucou')
     if (!email || !password || !firstName || !lastName) {
       return res.status(400).json({ message: 'Tous les champs sont requis.' });
     }

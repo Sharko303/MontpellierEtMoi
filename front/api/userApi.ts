@@ -29,15 +29,17 @@ export class UserApi {
       lastName,
     } = data;
 
-    console.log("data", data);
-    console.log("helloooooooo", UserApi.baseRoute);
+/*     console.log("data", data);
+    console.log("helloooooooo", UserApi.baseRoute); */
 
     // Vérification des données
     if (!email || !password || !passwordRetype || !firstName || !lastName) {
+      console.log("Tous les champs doivent être remplis");
       throw new Error("Tous les champs doivent être remplis");
     }
 
     if (password !== passwordRetype) {
+      console.log("mot de passe ne correspondes pas");
       throw new Error("Les mots de passe ne correspondent pas");
     }
     // Envoi de la requête de création d'utilisateur
@@ -49,8 +51,10 @@ export class UserApi {
         firstName,
         lastName,
       });
+      console.log("response", response);
       return response.data;
     } catch (error: any) {
+      console.log("error", error.response);
       // Gérer les erreurs de création d'utilisateur
       throw new Error(
         error.response?.data?.message ||

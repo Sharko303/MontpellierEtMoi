@@ -26,7 +26,7 @@ userRoutes.post("/users", User.register as any);
   }
 ); */
 //userRoutes.post('/users/login', );
-
+userRoutes.get('/users', User.get as any);
 userRoutes.post('/users/login', 
   passport.authenticate('json', { session: false }),
   function(req, res) {

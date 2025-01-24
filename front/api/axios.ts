@@ -1,8 +1,6 @@
 import axios, { /* AxiosInstance */ CreateAxiosDefaults } from "axios";
 
 const defaultAxiosConfig: CreateAxiosDefaults<unknown> = {
-  //baseURL: "https://back-nu-ebon.vercel.app/",
-  //baseURL: "http://localhost:3001",
   baseURL: "http://localhost:3000",
 };
 
