@@ -28,7 +28,7 @@ export default class Api {
             if (record.siret && !uniqueIds.has(record.siret)) {
               uniqueIds.add(record.siret);
               // Enregistrer le résultat dans la base de données
-             /*  await prisma.apiResult.upsert({
+              await prisma.apiResult.upsert({
                 where: { siret },
                 update: {
                   adresseEtablissement: record.adresseetablissement,
@@ -45,7 +45,7 @@ export default class Api {
                   longitude: record.geolocetablissement?.lon || null,
                   categorieEntreprise: record.categorieentreprise,
                 },
-              }); */
+              });
               result.push(record);
             }
           }

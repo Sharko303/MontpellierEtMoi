@@ -20,6 +20,7 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.8.5",
     "@types/passport": "^1.0.17",
+    "@types/qrcode": "^1.5.5",
     "dotenv": "^16.4.5",
     "prisma": "^6.2.1",
     "ts-node": "^10.9.2",
@@ -40,6 +41,7 @@
     "passport": "^0.7.0",
     "passport-json": "^1.2.0",
     "passport-local": "^1.0.0",
-    "passport-oauth2-client-password": "^0.1.2"
+    "passport-oauth2-client-password": "^0.1.2",
+    "qrcode": "^1.5.4"
   }
 }

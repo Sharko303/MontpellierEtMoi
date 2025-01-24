@@ -69,6 +69,7 @@ model PromoCode {
   establishmentId Int
   gameId        Int
   game          Game         @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  isUsed        Boolean      @default(false)
 
   @@map("codes_promo")
 }
