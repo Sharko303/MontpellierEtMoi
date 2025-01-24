@@ -86,3 +86,16 @@ model User {
 
   @@map("users")
 }
+
+model ApiResult {
+  id                   Int      @id @default(autoincrement())
+  siret                String   @unique
+  adresseEtablissement String
+  denominationUsuelle  String
+  latitude             Float?
+  longitude            Float?
+  categorieEntreprise  String?
+  createdAt            DateTime @default(now())
+
+  @@map("resultats_api")
+}
