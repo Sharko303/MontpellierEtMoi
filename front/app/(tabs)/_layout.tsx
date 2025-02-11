@@ -50,17 +50,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="search"
         options={{
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "Recherche",
+          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
         }}
       />
       {/* On ajoute le login */}
       <Tabs.Screen
-        name="login"
+        name="account"
         options={{
-          title: "Login",
+          title: "Mon compte",
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />

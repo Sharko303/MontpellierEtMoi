@@ -3,5 +3,5 @@ import Commercant from "../controllers/Commercant";
 
 export const commercantRoutes = Router();
 
-commercantRoutes.get("/commercant", Commercant.getAllCommercantsMontpellier as any);
-commercantRoutes.post("/commercant/qr", Commercant.createPromoCode as any);
+commercantRoutes.get("/commercants", Commercant.getAllCommercantsMontpellier as any);
+commercantRoutes.post("/commercants/qr", Commercant.createPromoCode as any);

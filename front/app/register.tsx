@@ -3,6 +3,7 @@ import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import { z } from "zod";
 import { useNavigation } from "@react-navigation/native";
 import { UserApi } from "../api/userApi";
+import { Link } from "expo-router";
 
 // Définition du schéma de validation avec Zod
 const registerSchema = z
@@ -153,12 +154,10 @@ export default function Register({
       </Pressable>
 
       <Text style={styles.loginPrompt}>Déjà un compte ?</Text>
-      <Text
-        style={styles.loginLink}
-        onPress={() => navigation.navigate("login")}
-      >
-        Se connecter
-      </Text>
+      
+      <Link replace href="/login">
+        <Text style={styles.loginLink}>Se connecter</Text>
+      </Link>
     </View>
   );
 }

@@ -1,0 +1,1 @@
+export const FIELD_REQUIRED_STR = "Merci de remplir ce champ";

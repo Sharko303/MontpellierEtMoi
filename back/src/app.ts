@@ -6,6 +6,7 @@ import passport from "./routes/auth";
 import csrf from "csurf";
 import session from "express-session";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -13,10 +14,14 @@ const app: Express = express();
 const port = process.env.PORT || 3000;
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000", // L'URL de ton front-end
+  credentials: true // Autorise les cookies
+}));
 app.use(bodyParser.json());
 // Initialisation de Passport
 app.use(passport.initialize());
+app.use(cookieParser("fJBYgyfyuvy65fuyR76RfGHoh"));
 
 // Protection CSRF
 /* app.use(csrf()); */

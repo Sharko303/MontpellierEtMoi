@@ -1,46 +1,59 @@
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, VirtualizedList } from "react-native";
 
-import { CommercantApi } from '@/api/commerceApi';
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
-import { useEffect, useState } from 'react';
+import { ApiResult } from "@/api/apiResult";
+import { Text, View } from "@/components/Themed";
+import { useEffect, useState } from "react";
+import MerchantCard from "@/components/MerchantCard";
+import { ApiResultInterface } from "@/interface/apiResult";
 
 export default function TabOneScreen() {
-
-  const [commerceTab, setCommerceTab] = useState([]);
-
+  // on refait notre use state et son type est un tableau de ApiResult (interface)
+  const [apiResult, setApiResult] = useState<ApiResultInterface[]>([]);
   const handleSearchCommerce = async () => {
-    const result = await CommercantApi.getCommercants();
+    const result = await ApiResult.getApiResult();
     console.log("result : ", result);
-    setCommerceTab(result);
-  }
+
+    if (result && result) {
+      setApiResult(result); // On ne garde que les données utiles
+    } else {
+      console.error("Erreur : structure de réponse inattendue", result);
+    }
+  };
+
   useEffect(() => {
     handleSearchCommerce();
-    console.log("data : ", commerceTab);
-  }
-  , []);
-console.log("data : ", commerceTab);
+  }, []);
+
+  const getItem = (_data: unknown, index: number) => apiResult[index];
+
+  const getItemCount = () => apiResult.length;
+
   return (
     <View>
-      <Text style={styles.title}>Accueil</Text>
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <VirtualizedList
+        renderItem={({ item }) => (
+          <MerchantCard
+            name={item.name}
+            location={item.adresse}
+            imageUrl={item.picture}
+          />
+        )}
+        keyExtractor={(item) => item.id.toString()}
+        getItemCount={getItemCount}
+        getItem={getItem}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-/*   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  }, */
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
 });

@@ -7,10 +7,12 @@ import {
   TextStyle,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Link } from "expo-router";
 import { Text, View } from "@/components/Themed";
 import React, { useState } from "react";
 import { z } from "zod";
 import { UserApi } from "@/api/userApi";
+import * as SecureStore from 'expo-secure-store';
 
 // Définition du schéma Zod pour les validations
 const loginSchema = z.object({
@@ -26,7 +28,7 @@ export default function Login() {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
     {}
   );
-  
+
   const navigation = useNavigation();
 
   const handleSubmit = async () => {
@@ -35,15 +37,20 @@ export default function Login() {
     if (result.success) {
       // Les données sont valides
       const response = await UserApi.login({ email, password });
-  
+
       if (response.error) {
         // Afficher une alerte en cas d'erreur
         Alert.alert("Erreur de connexion", response.error.message);
         return;
       }
-      
-      
-      Alert.alert("Connexion réussie !");
+      // on stocke le token dans le local storage
+      /* localStorage.setItem("token", response.jwt); */
+      console.log("response", response);
+      /* Alert.alert("Connexion réussie !"); */
+      console.log('hello')
+      await SecureStore.setItemAsync('userToken', response);
+      // Rediriger l'utilisateur vers la page d'accueil
+      navigation.navigate("index");
     } else {
       // Gérer les erreurs de validation
       const fieldErrors: { email?: string; password?: string } = {};
@@ -56,7 +63,6 @@ export default function Login() {
       console.log("error", errors);
     }
   };
-  
 
   return (
     <View style={styles.container}>
@@ -97,12 +103,14 @@ export default function Login() {
           <Text style={styles.buttonText}>Se connecter</Text>
         </Pressable>
         <Text style={styles.label}>Pas de compte ? Inscrivez-vous</Text>
-          <Text
-            style={styles.registerLink}
-            onPress={() => navigation.navigate("register")}
-          >
-            S'inscrire
+        <Link replace href="/register">
+          <Text style={styles.registerLink}>S'inscrire</Text>
+        </Link>
+        <Link replace href="/registerpro">
+          <Text style={styles.registerLink}>
+            S'inscrire en tant que commerçant
           </Text>
+        </Link>
       </View>
     </View>
   );

@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import axios from "axios";
 import { Request, Response } from "express";
 import QRCode from "qrcode";
+import Api from "./Api";
 
 const API_BASE_URL = process.env.URL_OPEN_DATA;
 const prisma = new PrismaClient();
@@ -14,26 +15,9 @@ const generatePromoCode = (length: number = 16): string => {
 
 export default class Commercant {
   static getAllCommercantsMontpellier = async (req: Request, res: Response) => {
-    const results = [];
-    let start = 0;
-    const rows = 100;
-    // let hasMore = true; on devra l'utiliser pour les pages suivantes
-    const params = {
-      q: "Montpellier",
-      rows,
-      start,
-      refine: {
-        commune: "Montpellier",
-      },
-    };
-
-    const response = await axios.get(`${API_BASE_URL}`, {
-      params,
-    });
-    console.log(response.data);
-    results.push(...response.data);
-
-    return res.json(response.data);
+    const response = await Api.get(req, res);
+    console.log("response", response);
+    return res.json(response);
   };
 
   static createPromoCode = async (req: Request, res: Response) => {

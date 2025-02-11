@@ -61,6 +61,14 @@ function RootLayoutNav() {
           name="register"
           options={{ title: "S'enregistrer" }} // Option pour le titre
         />
+        <Stack.Screen
+          name="login"
+          options={{ title: "Se connecter" }} // Option pour le titre
+        />
+        <Stack.Screen
+          name="registerpro"
+          options={{ title: "S'inscrire" }} // Option pour le titre
+        />
       </Stack>
     </ThemeProvider>
   );
