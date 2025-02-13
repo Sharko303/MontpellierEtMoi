@@ -3,7 +3,7 @@ import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import { z } from "zod";
 import { useNavigation } from "@react-navigation/native";
 import { UserApi } from "../api/userApi";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 
 // Définition du schéma de validation avec Zod
 const registerSchema = z
@@ -69,9 +69,9 @@ export default function Register({
           lastName,
         });
         console.log("Inscription réussie :", { email, password });
-        navigation.navigate("login"); // Redirige vers la page de connexion après inscription
+        router.replace("/login"); // Redirige vers la page de connexion après inscription
       } catch (error) {
-        setErrors({ email: "Erreur lors de l'inscription", });
+        console.log(error);
       }
     }
   };

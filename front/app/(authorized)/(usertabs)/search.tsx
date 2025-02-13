@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import MerchantCard from "@/components/MerchantCard";
-import { ApiResultInterface } from "@/interface/apiResult";
+import { ApiResultInterface } from "@/entities/apiResult";
 
 export default function SearchScreen() {
   const [query, setQuery] = useState("");

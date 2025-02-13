@@ -2,13 +2,15 @@ import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Button, ActivityIndicator } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Link } from "expo-router";
-import Login from "../login";
+import Login from "../../login";
 import { UserApi } from "@/api/userApi";
+import { useAuthSession } from "@/context/UserContext";
 
 export default function Account() {
   const navigation = useNavigation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const authSession = useAuthSession();
 
   useFocusEffect(
     useCallback(() => {
@@ -50,7 +52,7 @@ export default function Account() {
       <Text>Bienvenue sur votre compte !</Text>
       <Button
         title="Déconnexion"
-        onPress={() => UserApi.logout().then(() => navigation.navigate("index"))}
+        onPress={() => UserApi.logout().then(() => authSession.signOut())}
       />
     </View>
   );

@@ -76,7 +76,7 @@ export class UserApi {
       );
     }
   }
-
+  
   static async registerPro(data: RegisterProData) {
     const {
       email,
@@ -124,8 +124,6 @@ export class UserApi {
   static async login(data: LoginData) {
     const { email, password } = data;
 
-    console.log("data", data);
-
     // Vérification des données
     if (!email || !password) {
       return { error: { message: "Email et mot de passe requis" } };
@@ -143,11 +141,8 @@ export class UserApi {
           withCredentials: true,
         }
       );
-      console.log(response.data);
       return response.data;
     } catch (error: any) {
-      console.log("error: ", error);
-
       // Normaliser l'erreur en un format JSON
       if (error.response) {
         return {
@@ -185,7 +180,7 @@ export class UserApi {
     return res.data;
   }
 
-  static async getMe(): Promise<boolean> {
+  static async getMe() {
     const token = await SecureStore.getItemAsync("userToken");
     if (!token) {
       return false;
@@ -196,7 +191,7 @@ export class UserApi {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("response alloo", response);
+      /* console.log("response alloo", response); */
       return response.data;
     } catch (error: any) {
       return false;

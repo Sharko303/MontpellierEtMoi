@@ -5,7 +5,7 @@ export class ApiResult {
 
 static async getApiResult() {
     const response = await axiosInstance.get(ApiResult.baseRoute);
-    console.log("response", response);
+    /* console.log("response", response); */
     return response.data;
   }
 }

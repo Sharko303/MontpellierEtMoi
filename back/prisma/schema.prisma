@@ -8,16 +8,17 @@ datasource db {
 }
 
 model Contract {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  endDate   DateTime
-  startDate DateTime
-  userId    Int
-  actif     Boolean  @default(false)
-  type      String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                  Int              @id @default(autoincrement())
+  createdAt           DateTime         @default(now())
+  endDate             DateTime
+  startDate           DateTime
+  userId              Int
+  autoRenew           Boolean          @default(false)
+  typeId              Int              @default(1)
+  type                subscriptionType @relation(fields: [typeId], references: [id])
+  remainingPromoCodes Int              @default(0)
+  user                User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId], map: "contrats_merchantId_fkey")
   @@map("contrats")
 }
 
@@ -27,7 +28,6 @@ model Game {
   description    String
   endDate        DateTime
   startDate      DateTime
-  promoCodes     PromoCode[]
   participations GameParticipation[]
 
   @@map("jeux")
@@ -47,43 +47,72 @@ model GameParticipation {
 }
 
 model PromoCode {
-  id              Int      @id @default(autoincrement())
-  code            String   @unique
-  description     String?
-  establishmentId Int
-  gameId          Int
-  validUntil      DateTime
-  game            Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  id          String   @id @default(uuid())
+  description String?
+  expiration  DateTime
+  valid       Boolean  @default(false)
+  userId      Int?
+  merchantId  Int
+  merchant    User     @relation(name: "MerchantPromoCodes", fields: [merchantId], references: [id], onDelete: Cascade)
+  user        User?    @relation(name: "UserPromoCodes", fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([gameId], map: "codes_promo_gameId_fkey")
+  @@index([merchantId], map: "codes_promo_merchantId_fkey")
+  @@index([userId], map: "codes_promo_userId_fkey")
   @@map("codes_promo")
 }
 
 model User {
-  id             Int                 @id @default(autoincrement())
-  email          String              @unique
-  password       String
-  createdAt      DateTime            @default(now())
-  firstName      String
-  lastName       String
-  phoneNumber    String?
-  userType       String
-  contracts      Contract[]
-  participations GameParticipation[]
+  id                 Int                 @id @default(autoincrement())
+  email              String              @unique
+  password           String
+  createdAt          DateTime            @default(now())
+  firstName          String
+  lastName           String
+  phoneNumber        String?
+  userType           String
+  contracts          Contract[]
+  participations     GameParticipation[]
+  userApiResults     UserApiResult[]
+  userPromoCodes     PromoCode[]         @relation(name: "UserPromoCodes")
+  merchantPromoCodes PromoCode[]         @relation(name: "MerchantPromoCodes")
 
   @@map("users")
 }
 
 model ApiResult {
-  id                   Int      @id @default(autoincrement())
-  siret                String   @unique
+  id                   Int             @id @default(autoincrement())
+  siret                String          @unique
   adresseEtablissement String
   denominationUsuelle  String?
   latitude             Float?
   longitude            Float?
   categorieEntreprise  String?
-  createdAt            DateTime @default(now())
+  createdAt            DateTime        @default(now())
   picture              String?
+  users                UserApiResult[]
 
   @@map("resultats_api")
+}
+
+model UserApiResult {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  apiResult Int
+  result    ApiResult @relation(fields: [apiResult], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "user_resultats_api_userId_fkey")
+  @@index([apiResult], map: "user_resultats_api_apiResult_fkey")
+  @@map("user_resultats_api")
+}
+
+model subscriptionType {
+  id               Int        @id @default(autoincrement())
+  name             String
+  nbPromoCodes     Int
+  accessToDasboard Boolean
+  statistics       Boolean
+  prioritySupport  Boolean
+  price            Float
+  contracts        Contract[]
 }

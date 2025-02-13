@@ -1,17 +1,20 @@
-import { ScrollView, StyleSheet, VirtualizedList } from "react-native";
-
+import { StyleSheet, VirtualizedList } from "react-native";
 import { ApiResult } from "@/api/apiResult";
 import { Text, View } from "@/components/Themed";
 import { useEffect, useState } from "react";
 import MerchantCard from "@/components/MerchantCard";
-import { ApiResultInterface } from "@/interface/apiResult";
+import { ApiResultInterface } from "@/entities/apiResult";
+import { useAuthSession } from "@/context/UserContext";
 
-export default function TabOneScreen() {
+export default function Partnership() {
   // on refait notre use state et son type est un tableau de ApiResult (interface)
   const [apiResult, setApiResult] = useState<ApiResultInterface[]>([]);
+  const { user, isLoading } = useAuthSession();
+
   const handleSearchCommerce = async () => {
     const result = await ApiResult.getApiResult();
-    console.log("result : ", result);
+    /* console.log("result : ", result); */
+    /* SecureStore.deleteItemAsync("userToken"); */
 
     if (result && result) {
       setApiResult(result); // On ne garde que les données utiles
@@ -55,5 +58,10 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: "80%",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

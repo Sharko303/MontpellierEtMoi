@@ -7,12 +7,12 @@ import {
   TextStyle,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { Text, View } from "@/components/Themed";
 import React, { useState } from "react";
 import { z } from "zod";
 import { UserApi } from "@/api/userApi";
-import * as SecureStore from 'expo-secure-store';
+import { useAuthSession } from "@/context/UserContext";
 
 // Définition du schéma Zod pour les validations
 const loginSchema = z.object({
@@ -23,14 +23,15 @@ const loginSchema = z.object({
 });
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("thibault@gmail.com");
+  const [password, setPassword] = useState("thibault");
+  const authSession = useAuthSession();
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
     {}
   );
-
+ /*  const { setUser } = useUser(); */
   const navigation = useNavigation();
-
+  const router = useRouter();
   const handleSubmit = async () => {
     // Validation des données
     const result = loginSchema.safeParse({ email, password });
@@ -43,14 +44,7 @@ export default function Login() {
         Alert.alert("Erreur de connexion", response.error.message);
         return;
       }
-      // on stocke le token dans le local storage
-      /* localStorage.setItem("token", response.jwt); */
-      console.log("response", response);
-      /* Alert.alert("Connexion réussie !"); */
-      console.log('hello')
-      await SecureStore.setItemAsync('userToken', response);
-      // Rediriger l'utilisateur vers la page d'accueil
-      navigation.navigate("index");
+      authSession.signIn(response.token);
     } else {
       // Gérer les erreurs de validation
       const fieldErrors: { email?: string; password?: string } = {};
@@ -108,7 +102,7 @@ export default function Login() {
         </Link>
         <Link replace href="/registerpro">
           <Text style={styles.registerLink}>
-            S'inscrire en tant que commerçant
+            Je suis commerçant
           </Text>
         </Link>
       </View>

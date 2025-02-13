@@ -5,12 +5,16 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Redirect, Slot, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Register from "./register";
 
 import { useColorScheme } from "@/components/useColorScheme";
+import UserProvider from "@/context/UserContext";
+import { User } from "@/entities/Types";
+import Login from "./login";
+import { Text } from "react-native";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -19,13 +23,15 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
+  initialRouteName: "login",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  //const { isLoading } = useUser(); // On récupère l'utilisateur
+
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
@@ -46,30 +52,53 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-        <Stack.Screen
-          name="register"
-          options={{ title: "S'enregistrer" }} // Option pour le titre
-        />
-        <Stack.Screen
-          name="login"
-          options={{ title: "Se connecter" }} // Option pour le titre
-        />
-        <Stack.Screen
-          name="registerpro"
-          options={{ title: "S'inscrire" }} // Option pour le titre
-        />
-      </Stack>
-    </ThemeProvider>
+    <UserProvider>
+      <Slot />
+    </UserProvider>
   );
 }
+
+// function RootLayoutNav() {
+//   const colorScheme = useColorScheme();
+//   const { user, isLoading } = useUser(); // On récupère l'utilisateur
+//   const [currentUser, setCurrentUser] = useState<User | null>(null); // État local pour forcer un re-render
+
+//   useEffect(() => {
+//     if (user !== null) {
+//       setCurrentUser(user); // Mettre à jour l'utilisateur et forcer le re-render
+//     }
+//   }, [user]);
+
+//   if (!user) {
+//     return <Login />;
+//   }
+
+//   if (isLoading || currentUser === null) {
+//     return <Slot />; // On attend que l'utilisateur soit chargé
+//   }
+//   return (
+//     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+//       <Stack>
+//         <Stack.Screen
+//           name="login"
+//           options={{ title: "Se connecter" }} // Option pour le titre
+//         />
+//         {/* {user?.userType === "pro" ? (
+//             <Stack.Screen name="(protabs)" options={{ headerShown: false }} />
+//           ) : (
+//             <Stack.Screen name="(usertabs)" options={{ headerShown: false }} />
+//           )} */}
+//         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+//         <Stack.Screen
+//           name="register"
+//           options={{ title: "S'enregistrer" }} // Option pour le titre
+//         />
+//         <Stack.Screen
+//           name="registerpro"
+//           options={{ title: "S'inscrire" }} // Option pour le titre
+//         />
+//       </Stack>
+//     </ThemeProvider>
+//   );
+// }

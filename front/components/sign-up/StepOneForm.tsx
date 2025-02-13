@@ -2,7 +2,7 @@ import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, FlatList } 
 import { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { Form } from "@/entities/Types";
-import { ApiResultInterface } from "@/interface/apiResult";
+import { ApiResultInterface } from "@/entities/apiResult";
 import { ApiResult } from "@/api/apiResult";
 
 const StepOneForm = ({ control, nextStep }: Form) => {

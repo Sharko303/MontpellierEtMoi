@@ -33,21 +33,25 @@ passport.use(
 );
 
 passport.use(
-  new BearerStrategy(
-    async function (token: any, done : any) {
+  new BearerStrategy(async function (token: any, done: any) {
+    let user;
+    try {
       const decoded = jwt.verify(
         token,
         "fJBYgyfyuvy65fuyR76RfGHoh"
       ) as jwt.JwtPayload;
-      const user = await prisma.user.findUnique({
+      user = await prisma.user.findUnique({
         where: { id: decoded.user },
       });
-      // @ts-ignore
-      //req.user = user;
-      if (!user) {
-        return done(null, false);
-      }
-      done(null, user);
+    } catch (err) {
+      user = null;
+    }
+    // @ts-ignore
+    //req.user = user;
+    if (!user) {
+      return done(null, false);
+    }
+    done(null, user);
     /*   UserController.findByToken({ token: token }, function (err: any, user: any) {
         if (err) {
           return done(err);
@@ -57,8 +61,7 @@ passport.use(
         }
         return done(null, user);
       }); */
-    }
-  )
+  })
 );
 
 // Sérialisation de l'utilisateur pour la session
