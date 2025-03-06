@@ -5,6 +5,7 @@ import { commercantRoutes } from './commercant';
 import { apiRoutes } from './api';
 import { apiResult } from './apiResult';
 import { subscription } from './subscription';
+import { codePromo } from './codePromo';
 /* import { middlewareRoutes } from './middleware' ; */
 export const routes = express.Router();
 
@@ -14,4 +15,5 @@ routes.use(commercantRoutes);
 routes.use(apiRoutes);
 routes.use(apiResult);
 routes.use(subscription);
+routes.use(codePromo);
 /* routes.use(middlewareRoutes); */

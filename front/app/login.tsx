@@ -6,7 +6,6 @@ import {
   StyleProp,
   TextStyle,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { Link, useRouter } from "expo-router";
 import { Text, View } from "@/components/Themed";
 import React, { useState } from "react";
@@ -23,14 +22,13 @@ const loginSchema = z.object({
 });
 
 export default function Login() {
-  const [email, setEmail] = useState("thibault@gmail.com");
+  const [email, setEmail] = useState("commercant@gmail.com");
   const [password, setPassword] = useState("thibault");
   const authSession = useAuthSession();
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
     {}
   );
  /*  const { setUser } = useUser(); */
-  const navigation = useNavigation();
   const router = useRouter();
   const handleSubmit = async () => {
     // Validation des données

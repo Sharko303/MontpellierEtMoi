@@ -1,18 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Button, ActivityIndicator } from "react-native";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import { Link } from "expo-router";
 import Login from "../../login";
 import { UserApi } from "@/api/userApi";
 import { useAuthSession } from "@/context/UserContext";
+import { set } from "react-hook-form";
 
 export default function Account() {
-  const navigation = useNavigation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const authSession = useAuthSession();
-
-  useFocusEffect(
+  console.log("authSession", authSession);
+/*   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
         setIsLoading(true);
@@ -31,7 +31,7 @@ export default function Account() {
       fetchData();
     }, [])
   );
-
+ */
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -41,8 +41,8 @@ export default function Account() {
     );
   }
 
-  if (!isLoggedIn) {
-    console.log("isLoggedIn", isLoggedIn);
+  if (!authSession.user) {
+    console.log("isLoggedIn", isLoggedIn) ;
     return <Login />;
   }
 

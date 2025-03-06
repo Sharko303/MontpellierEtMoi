@@ -8,6 +8,9 @@ import { useFonts } from "expo-font";
 import { Redirect, Slot, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
+import { ToastProvider, useToast } from "@/components/toast/ToastContext";
+import { ToastContainer } from '@/components/toast/ToastContainer';
+import { Toast } from './services/ToastService';
 import Register from "./register";
 
 import { useColorScheme } from "@/components/useColorScheme";
@@ -15,6 +18,19 @@ import UserProvider from "@/context/UserContext";
 import { User } from "@/entities/Types";
 import Login from "./login";
 import { Text } from "react-native";
+
+// Composant pour initialiser le service Toast
+const ToastInitializer: React.FC = () => {
+  const { show } = useToast();
+  
+  useEffect(() => {
+    // Initialiser le service Toast global
+    Toast.setShowToast(show);
+  }, [show]);
+  
+  return null;
+};
+
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -53,9 +69,13 @@ export default function RootLayout() {
   }
 
   return (
-    <UserProvider>
-      <Slot />
-    </UserProvider>
+    <ToastProvider>
+      <UserProvider>
+        <Slot />
+        <ToastInitializer />
+        <ToastContainer />
+      </UserProvider>
+</ToastProvider>
   );
 }
 

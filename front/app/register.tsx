@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import { z } from "zod";
-import { useNavigation } from "@react-navigation/native";
 import { UserApi } from "../api/userApi";
 import { Link, router } from "expo-router";
 
@@ -34,8 +33,6 @@ export default function Register({
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string } | null>(null);
-
-  const navigation = useNavigation();
   
   const handleRegister = async () => {
     // Validation avec Zod
