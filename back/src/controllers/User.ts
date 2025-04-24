@@ -69,7 +69,7 @@ export default class UserController {
           secure: false,
         });
         console.log("token", token);
-        return res.json({token});
+        return res.json({ token });
       }
     );
   }
@@ -124,7 +124,16 @@ export default class UserController {
       lastName,
       phoneNumber,
     } = req.body;
-    console.log(etablissement, image, subscriptionType, email, password, firstName, lastName, phoneNumber);
+    console.log(
+      etablissement,
+      image,
+      subscriptionType,
+      email,
+      password,
+      firstName,
+      lastName,
+      phoneNumber
+    );
     // on enregistre un utilisateur pro dans la table user avec le role pro
     if (!email || !password || !firstName || !lastName) {
       return res.status(400).json({ message: "Tous les champs sont requis." });
@@ -152,24 +161,25 @@ export default class UserController {
         },
       });
 
-      // on ajoute dans la table userresultatapi l'user id et l'établissement choisi par l'utilisateur
-      const userApiResult = await prisma.userApiResult.create({
-        data: {
-          userId: user.id,
-          apiResult: parseInt(etablissement.id),
-        },
-      });
-
       // maintenant on ajoute l'image a l'établissement choisi par l'utilisateur
       // on vérifie que l'établissement existe
-      const existingEstablishment = await prisma.apiResult.findUnique({
+      const existingEstablishment = await prisma.shop.findUnique({
         where: { id: parseInt(etablissement.id) },
       });
       if (!existingEstablishment) {
         return res.status(400).json({ message: "Etablissement inexistant." });
       }
+      // on ajoute dans la table userresultatapi l'user id et l'établissement choisi par l'utilisateur
+      const userShop = await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          shops: {
+            connect: { id: existingEstablishment.id },
+          },
+        },
+      });
       if (image) {
-        const establishmentImage = await prisma.apiResult.update({
+        const establishmentImage = await prisma.shop.update({
           where: { id: parseInt(etablissement.id) },
           data: {
             picture: image,

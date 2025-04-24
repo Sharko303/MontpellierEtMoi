@@ -26,6 +26,8 @@ model Game {
   id             Int                 @id @default(autoincrement())
   title          String
   description    String
+  answer         String
+  counter        Int @default (0)
   endDate        DateTime
   startDate      DateTime
   participations GameParticipation[]
@@ -37,6 +39,7 @@ model GameParticipation {
   id                Int      @id @default(autoincrement())
   gameId            Int
   participationDate DateTime @default(now())
+  isWin             Boolean  @default(false)
   userId            Int
   game              Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -66,20 +69,20 @@ model User {
   email              String              @unique
   password           String
   createdAt          DateTime            @default(now())
-  firstName          String
+  firstName           String
   lastName           String
   phoneNumber        String?
   userType           String
   contracts          Contract[]
   participations     GameParticipation[]
-  userApiResults     UserApiResult[]
+  shops              Shop[]
   userPromoCodes     PromoCode[]         @relation(name: "UserPromoCodes")
   merchantPromoCodes PromoCode[]         @relation(name: "MerchantPromoCodes")
 
   @@map("users")
 }
 
-model ApiResult {
+model Shop {
   id                   Int             @id @default(autoincrement())
   siret                String          @unique
   adresseEtablissement String
@@ -89,21 +92,9 @@ model ApiResult {
   categorieEntreprise  String?
   createdAt            DateTime        @default(now())
   picture              String?
-  users                UserApiResult[]
+  users                User[]
 
-  @@map("resultats_api")
-}
-
-model UserApiResult {
-  id        Int       @id @default(autoincrement())
-  userId    Int
-  apiResult Int
-  result    ApiResult @relation(fields: [apiResult], references: [id], onDelete: Cascade)
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId], map: "user_resultats_api_userId_fkey")
-  @@index([apiResult], map: "user_resultats_api_apiResult_fkey")
-  @@map("user_resultats_api")
+  @@map("shops")
 }
 
 model subscriptionType {

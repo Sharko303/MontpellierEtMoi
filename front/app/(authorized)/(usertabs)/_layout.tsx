@@ -9,7 +9,7 @@ import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { useFocusEffect } from "@react-navigation/native";
 import { UserApi } from "@/api/userApi";
 import { User } from "@/entities/Types";
-
+import { styles } from "@/styles/styles";
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
@@ -24,12 +24,19 @@ export default function TabLayout() {
   return (
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+          tabBarActiveTintColor: styles.bgSecondary.backgroundColor,
+          tabBarInactiveTintColor: styles.textWhite.color,
+          tabBarStyle: {
+            backgroundColor: styles.bgPrimary.backgroundColor,
+          },
+          tabBarLabelStyle: {
+            fontSize: 12,
+            paddingBottom: 5,
+          },
           // Disable the static render of the header on web
           // to prevent a hydration error in React Navigation v6.
           headerShown: useClientOnlyValue(false, true),
         }}
-        /* style={styles.background} */
       >
         <Tabs.Screen
           name="index"
@@ -72,8 +79,3 @@ export default function TabLayout() {
       </Tabs>
   );
 }
-const styles = StyleSheet.create({
-  background: {
-    backgroundColor: "#0000",
-  },
-});

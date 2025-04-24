@@ -15,7 +15,9 @@ export default class Api {
 
       while (page < pageMax) {
         const { data } = await axios.get(
-          `https://www.herault-data.fr/api/explore/v2.1/catalog/datasets/entreprises-herault-sirene/records?select=adresseetablissement%2C%20denominationusuelleetablissement%2C%20siret%2C%20geolocetablissement%2C%20categorieentreprise&where=libellecommuneetablissement%20%3D%20%22MONTPELLIER%22%20and%20etatadministratifetablissement%20!%3D%22Actif%22%20and%20adresseetablissement%20!%3D%20%22%22%20and%20denominationusuelleetablissement%20!%3D%20%22%22&refine=soussectionetablissement%3A%22Restauration%22&limit=100&offset=${page * 100}`
+          `https://www.herault-data.fr/api/explore/v2.1/catalog/datasets/entreprises-herault-sirene/records?select=adresseetablissement%2C%20denominationusuelleetablissement%2C%20siret%2C%20geolocetablissement%2C%20categorieentreprise&where=libellecommuneetablissement%20%3D%20%22MONTPELLIER%22%20and%20etatadministratifetablissement%20!%3D%22Actif%22%20and%20adresseetablissement%20!%3D%20%22%22%20and%20denominationusuelleetablissement%20!%3D%20%22%22&refine=soussectionetablissement%3A%22Restauration%22&limit=100&offset=${
+            page * 100
+          }`
         );
 
         pageMax = Math.ceil(data.total_count / 100);
@@ -28,23 +30,17 @@ export default class Api {
             if (record.siret && !uniqueIds.has(record.siret)) {
               uniqueIds.add(record.siret);
               // Enregistrer le résultat dans la base de données
-              await prisma.apiResult.upsert({
+              const entity = {
+                adresseEtablissement: record.adresseetablissement,
+                denominationUsuelle: record.denominationusuelleetablissement,
+                latitude: record.geolocetablissement?.lat || null,
+                longitude: record.geolocetablissement?.lon || null,
+                categorieEntreprise: record.categorieentreprise,
+              };
+              await prisma.shop.upsert({
                 where: { siret },
-                update: {
-                  adresseEtablissement: record.adresseetablissement,
-                  denominationUsuelle: record.denominationusuelleetablissement,
-                  latitude: record.geolocetablissement?.lat || null,
-                  longitude: record.geolocetablissement?.lon || null,
-                  categorieEntreprise: record.categorieentreprise,
-                },
-                create: {
-                  siret,
-                  adresseEtablissement: record.adresseetablissement,
-                  denominationUsuelle: record.denominationusuelleetablissement,
-                  latitude: record.geolocetablissement?.lat || null,
-                  longitude: record.geolocetablissement?.lon || null,
-                  categorieEntreprise: record.categorieentreprise,
-                },
+                update: entity,
+                create: { siret, ...entity }
               });
               result.push(record);
             }

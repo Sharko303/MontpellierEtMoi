@@ -5,13 +5,13 @@ import Api from "./Api";
 const prisma = new PrismaClient();
 
 
-export default class ApiResult {
+export default class Shop {
   // on récupére nos données de l'api en bdd
   static get = async (req: Request, res: Response) => {
     try {
-      const apiResults = await prisma.apiResult.findMany();
+      const shops = await prisma.shop.findMany();
       let result = [] as any;
-      apiResults.forEach(element => {
+      shops.forEach(element => {
         // on refait notre objet avec des noms différents
         result.push({
           id: element.id,
@@ -37,7 +37,7 @@ export default class ApiResult {
     }
 
     try {
-        const results = await prisma.apiResult.findMany({
+        const results = await prisma.shop.findMany({
             where: {
                 OR: [
                     { denominationUsuelle: { contains: query as string } },

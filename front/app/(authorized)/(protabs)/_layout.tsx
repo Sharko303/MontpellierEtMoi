@@ -6,6 +6,7 @@ import Colors from "@/constants/Colors";
 import { StyleSheet } from "react-native";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
+import {COLORS} from "@/styles/styles";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -27,7 +28,7 @@ export default function TabLayout() {
           // on enleve (protabs) pour que le header soit visible
           
         }}
-        /* style={styles.background} */
+        style={styles.background}
       >
         <Tabs.Screen
           name="index"
@@ -79,6 +80,6 @@ export default function TabLayout() {
 }
 const styles = StyleSheet.create({
   background: {
-    backgroundColor: "#0000",
+    backgroundColor: COLORS.primary,
   },
 });

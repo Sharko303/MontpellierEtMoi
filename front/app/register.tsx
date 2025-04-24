@@ -1,8 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { z } from "zod";
 import { UserApi } from "../api/userApi";
 import { Link, router } from "expo-router";
+import { styles } from "@/styles/styles";
 
 // Définition du schéma de validation avec Zod
 const registerSchema = z
@@ -33,7 +41,7 @@ export default function Register({
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string } | null>(null);
-  
+
   const handleRegister = async () => {
     // Validation avec Zod
     const result = registerSchema.safeParse({
@@ -56,7 +64,14 @@ export default function Register({
       setErrors(null);
       // Envoi des données d'enregistrement au serveur
       try {
-        console.log('register', { email, password, passwordRetype, phoneNumber, firstName, lastName });
+        console.log("register", {
+          email,
+          password,
+          passwordRetype,
+          phoneNumber,
+          firstName,
+          lastName,
+        });
         await UserApi.register({
           email,
           password,
@@ -110,17 +125,17 @@ export default function Register({
         <Text style={styles.errorText}>{errors.lastName}</Text>
       )}
 
-        <Text style={styles.label}>Téléphone (optionnel)</Text>
-        <TextInput
-            style={styles.input}
-            onChangeText={setPhoneNumber}
-            value={phoneNumber}
-            placeholder="Votre numéro de téléphone"
-            keyboardType="phone-pad"
-        />
-        {errors?.phoneNumber && (
-            <Text style={styles.errorText}>{errors.phoneNumber}</Text>
-        )}
+      <Text style={styles.label}>Téléphone (optionnel)</Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={setPhoneNumber}
+        value={phoneNumber}
+        placeholder="Votre numéro de téléphone"
+        keyboardType="phone-pad"
+      />
+      {errors?.phoneNumber && (
+        <Text style={styles.errorText}>{errors.phoneNumber}</Text>
+      )}
 
       <Text style={styles.label}>Mot de passe*</Text>
       <TextInput
@@ -145,13 +160,14 @@ export default function Register({
       {errors?.passwordRetype && (
         <Text style={styles.errorText}>{errors.passwordRetype}</Text>
       )}
-
-      <Pressable style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>S'inscrire</Text>
-      </Pressable>
+      <View style={styles.center}>
+        <TouchableOpacity style={styles.button} onPress={handleRegister}>
+          <Text style={styles.buttonText}>S'inscrire</Text>
+        </TouchableOpacity>
+      </View>
 
       <Text style={styles.loginPrompt}>Déjà un compte ?</Text>
-      
+
       <Link replace href="/login">
         <Text style={styles.loginLink}>Se connecter</Text>
       </Link>
@@ -159,7 +175,7 @@ export default function Register({
   );
 }
 
-const styles = StyleSheet.create({
+/* const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
@@ -189,7 +205,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   button: {
-    backgroundColor: "blue",
+    backgroundColor: COLORS.primary,
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
@@ -211,3 +227,4 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 });
+ */

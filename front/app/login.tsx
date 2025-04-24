@@ -5,6 +5,7 @@ import {
   Alert,
   StyleProp,
   TextStyle,
+  TouchableOpacity,
 } from "react-native";
 import { Link, useRouter } from "expo-router";
 import { Text, View } from "@/components/Themed";
@@ -12,6 +13,8 @@ import React, { useState } from "react";
 import { z } from "zod";
 import { UserApi } from "@/api/userApi";
 import { useAuthSession } from "@/context/UserContext";
+import { styles } from "@/styles/styles";
+
 
 // Définition du schéma Zod pour les validations
 const loginSchema = z.object({
@@ -22,7 +25,7 @@ const loginSchema = z.object({
 });
 
 export default function Login() {
-  const [email, setEmail] = useState("commercant@gmail.com");
+  const [email, setEmail] = useState("thibault@gmail.com");
   const [password, setPassword] = useState("thibault");
   const authSession = useAuthSession();
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
@@ -58,7 +61,7 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Montpellier & Moi</Text>
+      <Text style={styles.title}>Ma Ville & Moi</Text>
       {/* On affiche l'erreur si on n'arrive pas a ce connecter */}
       {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
       <Text style={styles.label}>Email</Text>
@@ -91,9 +94,9 @@ export default function Login() {
       )}
 
       <View style={styles.center}>
-        <Pressable style={styles.button} onPress={handleSubmit}>
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Se connecter</Text>
-        </Pressable>
+        </TouchableOpacity>
         <Text style={styles.label}>Pas de compte ? Inscrivez-vous</Text>
         <Link replace href="/register">
           <Text style={styles.registerLink}>S'inscrire</Text>
@@ -108,64 +111,3 @@ export default function Login() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginVertical: 20,
-  },
-  label: {
-    color: "black",
-    fontWeight: "bold",
-    fontSize: 15,
-    marginBottom: 5,
-    marginHorizontal: 10,
-    marginVertical: 10,
-  },
-  input: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    padding: 8,
-    marginBottom: 4,
-  },
-  inputError: {
-    borderColor: "red",
-  },
-  errorText: {
-    color: "red",
-    fontSize: 12,
-    marginLeft: 22,
-  },
-  button: {
-    backgroundColor: "blue",
-    color: "white",
-    padding: 15,
-    margin: 10,
-    width: 200,
-    borderRadius: 20,
-  },
-  buttonText: {
-    color: "white",
-    textAlign: "center",
-  },
-  center: {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  registerLink: {
-    textAlign: "center",
-    color: "blue",
-    fontSize: 16,
-    marginTop: 5,
-  },
-});

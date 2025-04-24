@@ -1,5 +1,5 @@
 import { StyleSheet, VirtualizedList } from "react-native";
-import { ApiResult } from "@/api/apiResult";
+import { ShopApi } from "@/api/shop";
 import { Text, View } from "@/components/Themed";
 import { useEffect, useState } from "react";
 import MerchantCard from "@/components/MerchantCard";

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `jeux` ADD COLUMN `counter` INTEGER NOT NULL DEFAULT 0;

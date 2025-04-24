@@ -8,6 +8,7 @@ import StepOneForm from "@/components/sign-up/StepOneForm";
 import StepTwoForm from "@/components/sign-up/StepTwoForm";
 import StepThreeForm from "@/components/sign-up/StepThreeForm";
 import { UserApi } from "@/api/userApi";
+import { styles } from "@/styles/styles";
 
 const registerSchema = z
   .object({
@@ -112,23 +113,3 @@ export default function SignUp() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  link: {
-    textAlign: "center",
-    color: "blue",
-    fontSize: 16,
-    marginTop: 20,
-  },
-});

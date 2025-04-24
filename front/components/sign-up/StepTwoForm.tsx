@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Controller } from "react-hook-form";
 import { Form } from "@/entities/Types";
+import { styles } from "@/styles/styles";
 
 const StepTwoForm = ({ control, nextStep, prevStep }: Form) => {
   const abonnements = [
@@ -91,108 +92,5 @@ const StepTwoForm = ({ control, nextStep, prevStep }: Form) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    backgroundColor: '#fff',
-    flex: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
-    marginBottom: 24,
-    color: '#333',
-    textAlign: 'center',
-  },
-  plansContainer: {
-    gap: 16,
-    marginBottom: 32,
-  },
-  planCard: {
-    borderRadius: 12,
-    padding: 20,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  selectedPlan: {
-    borderColor: 'orange',
-    borderWidth: 2,
-    backgroundColor: '#f8f9ff',
-  },
-  planHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  planName: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#333',
-  },
-  planPrice: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#666',
-  },
-  planDescription: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 4,
-  },
-  selectedText: {
-    color: 'orange',
-  },
-  selectedBadge: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    backgroundColor: 'orange',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  selectedBadgeText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  navigationButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-  },
-  backButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    backgroundColor: '#f0f0f0',
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: '#666',
-    fontWeight: '600',
-  },
-  nextButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    backgroundColor: 'blue',
-  },
-  nextButtonText: {
-    fontSize: 16,
-    color: '#fff',
-    fontWeight: '600',
-  },
-});
 
 export default StepTwoForm;
