@@ -8,4 +8,5 @@ export interface ApiResultInterface {
   longitude: number;
   category: string;
   picture: string;
+  isFavorite: boolean;
 }

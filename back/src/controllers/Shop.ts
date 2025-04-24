@@ -4,27 +4,52 @@ import Api from "./Api";
 
 const prisma = new PrismaClient();
 
+interface ShopResult {
+  id: number;
+  siret: string;
+  adresse: string;
+  name: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  category: string | null;
+  picture: string | null;
+  isFavorite: boolean;
+}
 
 export default class Shop {
   // on récupére nos données de l'api en bdd
   static get = async (req: Request, res: Response) => {
     try {
       const shops = await prisma.shop.findMany();
-      let result = [] as any;
-      shops.forEach(element => {
-        // on refait notre objet avec des noms différents
-        result.push({
-          id: element.id,
-          siret: element.siret,
-          adresse: element.adresseEtablissement,
-          name: element.denominationUsuelle,
-          latitude: element.latitude,
-          longitude: element.longitude,
-          category: element.categorieEntreprise,
-          picture: ''
+      // on ajoute les favoris de l'utilisateur
+
+      const user = req.user;
+      const userId = (user as { id: number }).id;
+      // Récupérer les shops favoris de l'utilisateur en une seule requête
+      let userFavoriteShopIds: number[] = [];
+      if (user) {
+        const userShops = await prisma.user.findUnique({
+          where: { id: userId },
+          include: { shops: true }
         });
-      });
-      res.json(result);
+        if (userShops && userShops.shops) {
+          userFavoriteShopIds = userShops.shops.map(shop => shop.id);
+        }
+      }
+      
+      // Créer le tableau résultat
+      const result: ShopResult[] = shops.map(shop => ({
+        id: shop.id,
+        siret: shop.siret,
+        adresse: shop.adresseEtablissement,
+        name: shop.denominationUsuelle,
+        latitude: shop.latitude,
+        longitude: shop.longitude,
+        category: shop.categorieEntreprise,
+        picture: shop.picture || '',
+        isFavorite: userFavoriteShopIds.includes(shop.id)
+      }));
+      res.json(result);      
     } catch (error) {
       res.status(500).json({ message: "Erreur serveur", error });
     }

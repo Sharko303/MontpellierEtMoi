@@ -17,6 +17,7 @@ import MerchantCard from "../components/MerchantCard";
 import { styles } from "@/styles/styles";
 import { Ionicons } from "@expo/vector-icons"; // Assurez-vous d'installer expo/vector-icons si ce n'est pas déjà fait
 import { set } from "react-hook-form";
+import { ShopApi } from "@/api/shop";
 
 interface ApiResultInterface {
   id: number;
@@ -49,10 +50,8 @@ export default function Search() {
   const executeSearch = async (text: string) => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:3000/shop/search?query=${text}`
-      );
-      setResults(response.data);
+      const response = await ShopApi.searchShop(text);
+      setResults(response);
     } catch (error) {
       console.error("Search error:", error);
     }

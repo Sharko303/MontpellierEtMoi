@@ -14,7 +14,7 @@ userRoutes.get("/users/me",passport.authenticate("bearer", { session: false }), 
 // Stratégie de connexion avec email/mot de passe (sessions Passport)
 userRoutes.post(
   "/users/login",
-  passport.authenticate("json", { session: false }),
+  passport.authenticate("json", { session: true }),
   UserController.loginJson as any
 );
 userRoutes.get(

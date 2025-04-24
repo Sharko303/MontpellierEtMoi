@@ -8,4 +8,12 @@ static async getShop() {
     /* console.log("response", response); */
     return response.data;
   }
+
+  static async searchShop(text: string){
+  // on fais cette requete await axios.get(`http://localhost:3000/shop/search?query=${text}`);
+    const response = await axiosInstance.get(
+      ShopApi.baseRoute + "/search?query=" + text
+    )
+    return response.data;
+  }
 }

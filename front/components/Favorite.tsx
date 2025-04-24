@@ -41,6 +41,8 @@ export default function Favorite() {
               name={item.name}
               location={item.adresse}
               imageUrl={item.picture}
+              shopId={item.id}
+              isFavorite={item.isFavorite}
             />
           </View>
         )}

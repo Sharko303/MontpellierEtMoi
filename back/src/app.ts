@@ -20,6 +20,13 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 // Initialisation de Passport
+app.use(session({
+  secret: 'elkzfnjzeifcnhneuGYRTDRTuyr§dftf6ft6r6fguytcvhezhmo',
+  resave: false,
+  saveUninitialized: false
+}))
+
+app.use(passport.authenticate('session'))
 app.use(passport.initialize());
 app.use(cookieParser("fJBYgyfyuvy65fuyR76RfGHoh"));
 

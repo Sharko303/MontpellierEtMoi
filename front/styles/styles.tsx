@@ -87,6 +87,10 @@ export const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 10,
   },
+  titleHeader: {
+    fontSize: 30,
+    fontWeight: "bold",
+  },
   input: {
     height: 40,
     borderRadius: 8,

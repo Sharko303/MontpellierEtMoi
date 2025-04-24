@@ -7,6 +7,7 @@ import { shop } from './shop';
 import { subscription } from './subscription';
 import { codePromo } from './codePromo';
 import { gameRoutes } from './game';
+import { favoriteRoutes } from './favorite';
 /* import { middlewareRoutes } from './middleware' ; */
 export const routes = express.Router();
 
@@ -18,4 +19,5 @@ routes.use(shop);
 routes.use(subscription);
 routes.use(codePromo);
 routes.use(gameRoutes)
+routes.use(favoriteRoutes);
 /* routes.use(middlewareRoutes); */

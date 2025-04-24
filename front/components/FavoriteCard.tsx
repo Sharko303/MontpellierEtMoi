@@ -3,21 +3,25 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 const defaultImage = require("../assets/images/bk.jpeg");
 import { styles } from "@/styles/styles";
 import { Ionicons } from "@expo/vector-icons";
+import { FavoriteApi } from "@/api/favorite";
+import { useAuthSession } from "@/context/UserContext";
 export default function FavoriteCard({
   name,
   location,
   imageUrl,
   isFavorite = false,
+  shopId,
   onToggleFavorite,
 }: {
   name: string;
   location: string;
   imageUrl: string;
   isFavorite?: boolean;
+  shopId?: number;
   onToggleFavorite?: (name: string) => void;
 }) {
   const [favorite, setFavorite] = useState(isFavorite);
-
+  const user = useAuthSession();
   const handleToggleFavorite = () => {
     // Si une fonction de callback est fournie, utilisez-la
     if (onToggleFavorite) {
@@ -25,6 +29,10 @@ export default function FavoriteCard({
     } else {
       // Sinon, gérez localement
       setFavorite(!favorite);
+      console.log("shop iddddd", shopId);
+      if(user?.user?.id && shopId) {
+        FavoriteApi.update(user?.user?.id?.valueOf(), shopId)
+      }
     }
   };
 

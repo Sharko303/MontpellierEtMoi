@@ -6,20 +6,28 @@ import CategoryList from "@/components/CategoryList";
 import PlayGame from "@/components/PlayGame";
 import { styles } from "@/styles/styles";
 import Favorite from "@/components/Favorite";
+import { useFocusEffect } from "expo-router";
+import { useCallback } from "react";
 
-export default function TabOneScreen() {
+export default function promoCode() {
   const user = useAuthSession();
+/*   async function handleSearchCommerce() {
+    const result = await codePromo.getAllByUserId(user.user.id);
+    if (result) {
+      setShop(result); // On ne garde que les données utiles
+    } else {
+      setShop([]); // Si aucune donnée n'est trouvée, on vide le tableau
+    }
+  }
+  useFocusEffect(
+    useCallback(() => {
+      handleSearchCommerce();
+    }, [])
+  ); */
   return (
     <>
     <ScrollView style={{ flex: 1, padding: 20, backgroundColor: "white" }}>
-      <Text style={stylesOverride.titleOverride}>Bienvenue {user.user?.firstName}</Text>
-      <Text style={[styles.muted, styles.font4, styles.mt2]}>Prêt à te challenger ?</Text>
-      <Search />
-      <CategoryList />
-      <PlayGame />
-      <Favorite />
-      <View style={styles.hr} />
-      <Text style={styles.subTitle}>Tendances</Text>
+      <Text style={styles.subTitle}>Aucun code promos gagné !</Text>
       {/* <Partnership /> */}
     </ScrollView>
     </>
