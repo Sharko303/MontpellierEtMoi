@@ -14,6 +14,7 @@ import {
   ScrollView,
 } from "react-native";
 import { styles } from "@/styles/styles";
+import { Link, router } from "expo-router";
 
 const QRCodeGeneratorScreen = () => {
   const [numberOfQRCodes, setNumberOfQRCodes] = useState("");
@@ -23,19 +24,17 @@ const QRCodeGeneratorScreen = () => {
 
   useEffect(() => {
     const fetchRemainingPromoCodes = async () => {
-      
-        const response = await CommercantApi.getRemainingPromoCodes(
-          authSession.user.id
+      const response = await CommercantApi.getRemainingPromoCodes(
+        authSession.user.id
+      );
+      if (response.error) {
+        Toast.show(
+          "danger",
+          response.message || "Erreur lors de la récupération des codes promo"
         );
-        if (response.error) {
-          Toast.show(
-            "danger",
-            response.message || "Erreur lors de la récupération des codes promo"
-          );
-          return;
-        }
-        setRemainingPromoCodes(response.remainingPromoCodes);
-      
+        return;
+      }
+      setRemainingPromoCodes(response.remainingPromoCodes);
     };
 
     fetchRemainingPromoCodes();
@@ -61,14 +60,16 @@ const QRCodeGeneratorScreen = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={[styles.container, {backgroundColor: "white"}]}
+      style={[styles.container, { backgroundColor: "white" }]}
     >
       <ScrollView contentContainerStyle={[styles.scrollContainer]}>
         <View style={styles.right}>
-          <TouchableOpacity style={styles.buttonSolde}>
-            <Text style={[styles.textCenter, styles.bold]}>
-              SOLDE : {remainingPromoCodes}
-            </Text>
+          <TouchableOpacity style={styles.buttonSolde} onPress={() => {
+            router.navigate("/accountPro");
+          }}>
+              <Text style={[styles.textCenter, styles.bold]}>
+                SOLDE : {remainingPromoCodes}
+              </Text>
           </TouchableOpacity>
         </View>
         <View>

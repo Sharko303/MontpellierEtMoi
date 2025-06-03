@@ -29,7 +29,7 @@ export default function Favorite() {
   const getItemCount = () => apiResult.length;
   return (
     <View>
-      <Text style={styles.subTitle}>Mes favoris</Text>
+      <Text style={styles.subTitle}>Vedettes</Text>
       {/* <Text style={styles.muted}>Tu n'as pas encore de favoris</Text> */}
 
       <VirtualizedList
