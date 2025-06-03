@@ -9,7 +9,7 @@ Avant de commencer, assurez-vous d'avoir installé :
 - **Node.js** (version 18 ou plus récente)
 - **npm** ou **yarn**
 - **Expo CLI** : `npm install -g @expo/cli`
-- **Base de données** (PostgreSQL/MySQL selon votre configuration)
+- **Base de données MySQL**
 
 Pour le développement mobile :
 - **Android Studio** (pour Android)
@@ -28,8 +28,8 @@ Pour le développement mobile :
 ### 1. Cloner le repository
 
 ```bash
-git clone [URL_DU_REPO]
-cd [NOM_DU_PROJET]
+git clone https://github.com/Sharko303/MontpellierEtMoi.git
+cd MontpellierEtMoi
 ```
 
 ### 2. Installation du Backend
@@ -48,10 +48,9 @@ cp .env.example .env
 
 2. Configurez vos variables d'environnement dans `.env` :
 ```env
-# Exemple de configuration - à adapter selon votre setup
-DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
+# Configuration base de données MySQL
+DATABASE_URL="mysql://username:password@localhost:3306/montpellier_db"
 JWT_SECRET="your-jwt-secret-key"
-PORT=3000
 ```
 
 3. Initialisez la base de données avec Prisma :
@@ -91,6 +90,52 @@ Puis choisissez votre plateforme :
 - **iOS** : `i` (nécessite Xcode, macOS uniquement)
 
 Vous pouvez aussi utiliser l'application **Expo Go** sur votre téléphone pour scanner le QR code.
+
+## 🔗 API Endpoints
+
+Le backend expose les endpoints suivants :
+
+### 🏠 Routes générales
+- `GET /` - Page d'accueil de l'API
+- `GET /api` - Informations générales de l'API
+
+### 👤 Utilisateurs
+- `POST /users` - Inscription utilisateur
+- `POST /users/pro` - Inscription commerçant
+- `POST /users/login` - Connexion
+- `POST /users/logout` - Déconnexion
+- `GET /users` - Liste des utilisateurs
+- `GET /users/me` - Profil utilisateur connecté (🔒 Auth requise)
+- `GET /users/auth` - Vérification d'authentification (🔒 Auth requise)
+
+### 🏪 Commerçants
+- `GET /commercants` - Liste des commerçants de Montpellier
+- `POST /commercants/qr` - Création de code promo via QR (🔒 Auth requise)
+- `POST /commercants/payment` - Traitement des paiements (🔒 Auth requise)
+- `GET /commercants/remainingPromoCodes/:userId` - Codes promo restants
+- `GET /commercants/contract` - Contrat commerçant
+
+### 🎟️ Codes Promo
+- `GET /code-promo/:id` - Détails d'un code promo
+- `GET /code-promo/` - Codes promo par utilisateur
+- `GET /code-promo-pro/` - Codes promo par commerçant
+
+### 🛍️ Boutique & Favoris
+- `GET /shop` - Catalogue boutique
+- `GET /shop/search` - Recherche dans la boutique
+- `GET /favorites/:id` - Favoris d'un utilisateur
+- `POST /favorites` - Ajouter aux favoris
+
+### 🎮 Jeux
+- `GET /games` - Liste des jeux disponibles
+- `GET /game/:id` - Détails d'un jeu
+- `POST /game` - Créer un jeu
+- `POST /game/play` - Jouer à un jeu
+
+### 📧 Abonnements
+- `GET /subscription` - Liste des abonnements disponibles
+
+**🔒 Auth requise** : Ces endpoints nécessitent un token Bearer dans l'en-tête Authorization
 
 ## 📱 Commandes utiles
 
@@ -142,9 +187,9 @@ npm test
 - **React Hook Form** - Gestion des formulaires
 - **Zod** - Validation des schémas
 - **Expo Camera** - Fonctionnalités caméra
-- **Firebase** - Services cloud (auth, messaging, crashlytics)
+- **Firebase** - Services cloud (auth, messaging, crashlytics) *à venir
 
-## 🔧 Configuration Firebase (Frontend)
+## 🔧 Configuration Firebase (Frontend) *à venir
 
 1. Créez un projet Firebase sur [console.firebase.google.com](https://console.firebase.google.com)
 2. Ajoutez votre application Android/iOS
@@ -157,22 +202,15 @@ npm test
 
 ### Backend (.env)
 ```env
-# Base de données
-DATABASE_URL="your-database-connection-string"
+# Base de données MySQL
+DATABASE_URL="mysql://username:password@localhost:3306/montpellier_db"
 
 # JWT
 JWT_SECRET="your-secret-key"
-
-# Serveur
-PORT=3000
-NODE_ENV=development
-
-# Sessions
-SESSION_SECRET="your-session-secret"
 ```
 
 ### Frontend
-Les variables d'environnement Expo peuvent être configurées dans `app.config.js` ou via les variables d'environnement système.
+Les variables d'environnement Expo peuvent être configurées dans `app.config.js` ou via les variables d'environnement système (non utilisé pour l'instant)
 
 ## 🐛 Résolution de problèmes
 
