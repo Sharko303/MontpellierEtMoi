@@ -110,7 +110,7 @@ export const styles = StyleSheet.create({
   button: {
     backgroundColor: COLORS.primary,
     color: "white",
-    padding: 15,
+    padding: 16,
     margin: 10,
     width: 200,
     borderRadius: 20,
@@ -575,71 +575,448 @@ export const styles = StyleSheet.create({
   },
 
   /* Step 3 */
-    formContainer: {
-      gap: 16,
-    },
-    inputContainer: {
-      marginBottom: 16,
-    },
-    row: {
-      flexDirection: 'row',
-      gap: 12,
-      width: '100%',
-    },
-    buttonContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: 32,
-      gap: 12,
-    },
-    submitButton: {
-      flex: 1,
-      backgroundColor: COLORS.primary,
-      padding: 16,
-      borderRadius: 8,
-      alignItems: 'center',
-    },
-    submitButtonText: {
-      color: '#fff',
-      fontSize: 16,
-      fontWeight: '600',
-    },
+  formContainer: {
+    gap: 16,
+  },
+  inputContainer: {
+    marginBottom: 16,
+  },
+  row: {
+    flexDirection: "row",
+    gap: 12,
+    width: "100%",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 32,
+    gap: 12,
+  },
+  submitButton: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+    padding: 16,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  submitButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
 
-    /* Game */
-    gameCard: {
-      margin: 20,
-      padding: 20,
-      backgroundColor: 'white',
-      borderRadius: 15,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 8,
-      elevation: 5,
-      height: 300,
+  /* Game */
+  gameCard: {
+    margin: 20,
+    padding: 20,
+    backgroundColor: "white",
+    borderRadius: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+    height: 300,
+  },
+  gameTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  timerContainer: {
+    backgroundColor: "#f0f0f0",
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 15,
+    alignItems: "center",
+  },
+  timerText: {
+    color: "#666",
+    fontWeight: "600",
+  },
+  description: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  /* Qr code user */
+  mainTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 15,
+    color: "#333",
+  },
+  filterContainer: {
+    flexDirection: "row",
+    marginBottom: 15,
+    justifyContent: "space-between",
+    backgroundColor: "#f2f2f2",
+    borderRadius: 10,
+    padding: 5,
+  },
+  filterButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    flex: 1,
+    alignItems: "center",
+    marginHorizontal: 2,
+  },
+  activeFilter: {
+    backgroundColor: COLORS.primary,
+  },
+  filterText: {
+    fontWeight: "500",
+    color: "#555",
+  },
+  activeFilterText: {
+    color: "white",
+  },
+  scrollContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  cardGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  cardContainerPromo: {
+    width: "48%",
+    marginBottom: 15,
+  },
+  cardPromo: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    overflow: "hidden",
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    borderWidth: 1,
+    borderBottomWidth: 3,
+    borderColor: "#ddd",
+    height: 140,
+    justifyContent: "space-between",
+  },
+  qrThumbnail: {
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  cardContent: {
+    flex: 1,
+    justifyContent: "space-between",
+  },
+  expiration: {
+    fontSize: 12,
+    color: "#666",
+    
+  },
+  statusBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 6,
+    alignSelf: "flex-start",
+  },
+  statusText: {
+    color: "white",
+    fontSize: 10,
+    fontWeight: "bold",
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    padding: 20,
+  },
+  qrContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20,
+    padding: 15,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 10,
+  },
+  modalDescription: {
+    fontSize: 14,
+    color: "#555",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  detailsContainer: {
+    backgroundColor: "#f9f9f9",
+    borderRadius: 10,
+    padding: 15,
+  },
+  detailRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+    flexWrap: "wrap",
+  },
+  detailLabel: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#666",
+    width: "40%",
+  },
+  detailValue: {
+    fontSize: 14,
+    color: "#333",
+    width: "60%",
+    textAlign: "right",
+  },
+  textArea: {
+    height: 100,
+    borderRadius: 8,
+    padding: 8,
+    marginBottom: 4,
+    borderColor: "#ddd",
+    backgroundColor: "#F2F3F7",
+  },
+
+  /* Une classe qui let le contenu a droite */
+  textRight: {
+    textAlign: "right",
+  },
+  /* Qui met un bouton a droite */
+  buttonSolde: {
+    backgroundColor: COLORS.secondary,
+    color: "black",
+    padding: 8,
+    margin: 10,
+    width: 120,
+    borderRadius: 20,
+  },
+  textCenter: {
+    textAlign: "center",
+  },
+
+  right: {
+    display: "flex",
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+  },
+
+  bold: {
+    fontWeight: "bold",
+  },
+
+  /* Payment */
+  plansContainer: {
+    paddingHorizontal: 16,
+    gap: 16,
+  },
+  planCard: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  selectedPlan: {
+    borderColor: COLORS.primary,
+    borderWidth: 2,
+  },
+  recommendedPlan: {
+    borderColor:  COLORS.success,
+    borderWidth: 2,
+  },
+  recommendedBadge: {
+    position: "absolute",
+    top: -12,
+    right: 16,
+    backgroundColor: COLORS.success,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  recommendedText: {
+    color: "#fff",
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  planNamePayment: {
+    fontSize: 20,
+    fontWeight: "600",
+    marginBottom: 8,
+    color: "#1a1a1a",
+  },
+  planPricePayment: {
+    fontSize: 32,
+    fontWeight: "700",
+    color: "#1a1a1a",
+    marginBottom: 16,
+  },
+  planPeriod: {
+    fontSize: 16,
+    color: "#666",
+  },
+  featuresList: {
+    gap: 8,
+  },
+  featureItem: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  featureText: {
+    fontSize: 14,
+    color: "#333",
+  },
+  featureDisabled: {
+    color: "#999",
+  },
+  paymentSection: {
+    marginTop: 32,
+    paddingHorizontal: 16,
+    paddingBottom: 32,
+  },
+  paymentTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    marginBottom: 16,
+    color: "#1a1a1a",
+  },
+  inputLabel: {
+    fontSize: 14,
+    fontWeight: "500",
+    marginBottom: 8,
+    color: "#333",
+  },
+  inputPayment: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+  },
+  rowInputs: {
+    flexDirection: "row",
+    gap: 16,
+  },
+  payButton: {
+    backgroundColor: "blue",
+    padding: 16,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 24,
+  },
+  payButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  containerPayment: {
+    flex: 1,
+  },
+/* Partie dashboard pro */
+  header: {
+    marginBottom: 30,
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#1a1a1a',
+    marginBottom: 8,
+  },
+  headerSubtitle: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+  },
+  statsContainer: {
+    marginBottom: 30,
+  },
+  statBlock: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 20,
+    marginBottom: 16,
+    borderLeftWidth: 4,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
     },
-    gameTitle: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: '#333',
-      marginBottom: 15,
-      textAlign: 'center',
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  statHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  statIcon: {
+    fontSize: 24,
+    marginRight: 12,
+  },
+  statTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+    flex: 1,
+  },
+  statCount: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  statDetails: {
+    marginTop: 4,
+  },
+  statSubtext: {
+    fontSize: 14,
+    color: '#666',
+  },
+
+  detailsTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 16,
+  },
+  summaryCard: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
     },
-    timerContainer: {
-      backgroundColor: '#f0f0f0',
-      padding: 10,
-      borderRadius: 10,
-      marginBottom: 15,
-      alignItems: 'center',
-    },
-    timerText: {
-      color: '#666',
-      fontWeight: '600',
-    },
-    description: {
-      fontSize: 16,
-      color: '#666',
-      marginBottom: 20,
-      textAlign: 'center',
-    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  summaryRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  summaryLabel: {
+    fontSize: 16,
+    color: '#666',
+  },
+  summaryValue: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
 });

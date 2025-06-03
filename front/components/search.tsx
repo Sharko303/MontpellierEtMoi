@@ -24,6 +24,7 @@ interface ApiResultInterface {
   name: string;
   adresse: string;
   picture: string;
+  isFavorite?: boolean; // Optionnel si vous gérez les favoris
 }
 
 export default function Search() {
@@ -82,7 +83,7 @@ export default function Search() {
   return (
     <View style={styles.mt3}>
       <View style={styles.searchContainer}>
-        <Ionicons name="search-outline" size={20} color="#757575" />
+        <Ionicons name="search-outline" size={20} color="#757575" style={{marginRight: 10}} />
         <TextInput
           style={[styles.input, styles.searchInput]}
           placeholder="Restaurants, bars, commerces..."
@@ -153,6 +154,8 @@ export default function Search() {
                         name={item.name}
                         location={item.adresse}
                         imageUrl={item.picture}
+                        isFavorite={item.isFavorite} // Vous pouvez gérer les favoris ici si nécessaire
+                        shopId={item.id}
                       />
                     </TouchableOpacity>
                   )}

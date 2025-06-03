@@ -26,7 +26,21 @@ export default class Commercant {
     const { user, description, number } = req.body;
     console.log(user)
     try {
+      if (!user || !description || !number) {
+        return res.status(400).json({ message: "Veuillez remplir tous les champs." });
+      }
+      // Vérifier si l'utilisateur est un commerçant
+      if (user.userType !== "pro") {
+        return res.status(403).json({ message: "Accès interdit." });
+      }
 
+      if(number <= 0) {
+        return res.status(400).json({ message: "Veuillez entrer un nombre valide." });
+      }
+
+      if(description.length < 5) {
+        return res.status(400).json({ message: "Veuillez entrer une description valide." });
+      }
       // Générer un code unique pour le code promo
       const code = generatePromoCode(16);
 
@@ -41,6 +55,9 @@ export default class Commercant {
       const contract = await prisma.contract.findFirst({
         where: {
           userId: user.id,
+          endDate: {
+            gte: new Date(),
+          },
         },
       });
 
@@ -64,9 +81,18 @@ export default class Commercant {
           },
         });
       }
+      // on met à jour le nombre de code promo restant dans le contrat
+      await prisma.contract.update({
+        where: {
+          id: contract.id,
+        },
+        data: {
+          remainingPromoCodes: contract.remainingPromoCodes - number,
+        },
+      });
 
       return res.status(201).json({
-        message: "Code promo créé avec succès"
+        message: "Code promo créé avec succès", remainingPromoCodes: contract.remainingPromoCodes - number,
       });
     } catch (error) {
       console.error("Erreur lors de la création du code promo :", error);
@@ -80,11 +106,11 @@ export default class Commercant {
   static payment = async (req: Request, res: Response) => {
     console.log("test");
     const { subscriptionType, cardNumber, expiryDate, cvv, user } = req.body;
-    console.log(user)
+    console.log("req.body", req.body);
     if (!subscriptionType || !cardNumber || !expiryDate || !cvv || !user) {
       return res
-        .status(400)
-        .json({ message: "Veuillez remplir tous les champs." });
+      .status(400)
+      .json({ message: "Veuillez remplir tous les champs." });
     }
     try {
       const startDate = new Date();
@@ -93,24 +119,30 @@ export default class Commercant {
       // on regarde en base de donnée la subscription choisi
       const subscription = await prisma.subscriptionType.findFirst({
         where: {
-          name: subscriptionType,
+          id: parseInt(subscriptionType),
         },
       });
       if(!subscription) {
+        console.log(user)
         return res.status(400).json({ message: "Type d'abonnement inconnu." });
-        }
-      const data = { 
+      }
+      const data = {
         startDate,
         endDate,
         autoRenew: true,
-        type: subscriptionType,
+        type: parseInt(subscriptionType),
         remainingPromoCodes: subscription.nbPromoCodes,
       }
-
+      console.log(data);
       // Mettre à jour le contrat
       const updatedContract = await prisma.contract.create({
         data: {
           ...data,
+          type: {
+            connect: {
+              id: parseInt(subscriptionType),
+            },
+          },
           user: {
             connect: {
               id: user.id,
@@ -128,4 +160,64 @@ export default class Commercant {
       });
     }
   };
+
+  static getRemainingPromoCodes = async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    try {
+      const contract = await prisma.contract.findFirst({
+        where: {
+          userId: parseInt(userId),
+          endDate: {
+            gte: new Date(),
+          },
+        },
+      });
+      if (!contract) {
+        return res.status(404).json({ message: "Aucun contrat trouvé." });
+      }
+      return res.json({
+        remainingPromoCodes: contract.remainingPromoCodes,
+      });
+    } catch (error) {
+      console.error("Erreur lors de la récupération des codes promo restants :", error);
+      return res.status(500).json({
+        message: "Erreur lors de la récupération des codes promo restants.",
+        error: error,
+      });
+    }
+  };
+
+  static getContract = async (req: Request, res: Response) => {
+    if(!req.user) {
+      return res.status(401).json({
+        message: "Utilisateur non authentifié",
+      });
+    }
+    const user = req.user;
+    const userId = (user as { id: number }).id;
+    
+    try {
+      const contract = await prisma.contract.findFirst({
+        where: {
+          userId: userId,
+          startDate: {
+            lte: new Date(),
+          },
+          endDate: {
+            gte: new Date(),
+          },
+        },
+      });
+      if (!contract) {
+        return res.status(404).json({ message: "Aucun contrat trouvé." });
+      }
+      return res.json(contract);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du contrat :", error);
+      return res.status(500).json({
+        message: "Erreur lors de la récupération du contrat.",
+        error: error,
+      });
+    }
+  }
 }

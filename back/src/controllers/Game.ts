@@ -58,7 +58,7 @@ export default class Game {
     }
 
     if (game.counter === 0) {
-      return res.status(400).json({ message: "Game is over !" });
+      return res.json({ message: "La partie est terminé !" });
     }
     
     if (game.answer === answer) {
@@ -70,7 +70,7 @@ export default class Game {
       });
 
       if (!qrCode) {
-        return res.status(400).json({ message: "No qr code available" });
+        return res.json({ message: "La partie est terminé !" });
       }
 
       await prisma.promoCode.update({

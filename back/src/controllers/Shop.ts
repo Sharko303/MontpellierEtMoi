@@ -47,10 +47,11 @@ export default class Shop {
         longitude: shop.longitude,
         category: shop.categorieEntreprise,
         picture: shop.picture || '',
-        isFavorite: userFavoriteShopIds.includes(shop.id)
+        isFavorite: userFavoriteShopIds != null ? userFavoriteShopIds.includes(shop.id) : userFavoriteShopIds
       }));
       res.json(result);      
     } catch (error) {
+      console.log(error)
       res.status(500).json({ message: "Erreur serveur", error });
     }
   };
@@ -73,6 +74,21 @@ export default class Shop {
             take: 20 // Limite les résultats pour éviter une surcharge
         });
 
+        // on regarde si il est dans les favoris de user
+        const user = req.user;
+        const userId = (user as { id: number }).id;
+        let userFavoriteShopIds: number[] = [];
+        if (user) {
+            const userShops = await prisma.user.findUnique({
+                where: { id: userId },
+                include: { shops: true }
+            });
+            if (userShops && userShops.shops) {
+                userFavoriteShopIds = userShops.shops.map(shop => shop.id);
+            }
+        }
+        // Formater les résultats pour la réponse
+
         const formattedResults = results.map((establishment) => ({
           id: establishment.id,
           siret: establishment.siret,
@@ -82,6 +98,8 @@ export default class Shop {
           longitude: establishment.longitude || 0,
           category: establishment.categorieEntreprise || "Catégorie inconnue",
           picture: /* establishment.imageUrl || */ "", // Assurez-vous d'avoir une colonne imageUrl dans la BDD
+          isFavorite: userFavoriteShopIds.includes(establishment.id)
+
       }));
 
       res.json(formattedResults);

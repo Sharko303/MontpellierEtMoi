@@ -16,16 +16,4 @@ export default class Subscription {
 
         return res.json(subscriptions);
     }
-   /*  static getSubscriptionByUserId = async (req: Request, res: Response) => {
-        const userId = parseInt(req.params.id);
-        const subscriptions = await prisma.subscriptionType.findMany({
-        });
-        if(subscriptions.length === 0) {
-            return res.status(404).json({
-                message: "Aucune souscription trouvée"
-            });
-        }
-
-        return res.json(subscriptions);
-    } */
 }

@@ -5,6 +5,8 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { Controller } from "react-hook-form";
 import { ValidForm } from "@/entities/Types";
@@ -50,8 +52,12 @@ const StepThreeForm = ({
   );
 
   return (
+    <KeyboardAvoidingView 
+    style={{ flex: 1, backgroundColor: "white" }}
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+  >
     <View style={styles.container}>
-      <Text style={styles.title}>Informations personnelles</Text>
 
       <View style={styles.row}>
         {renderInput("firstName", "Prénom*")}
@@ -91,6 +97,7 @@ const StepThreeForm = ({
         </TouchableOpacity>
       </View>
     </View>
+    </KeyboardAvoidingView>
   );
 };
 

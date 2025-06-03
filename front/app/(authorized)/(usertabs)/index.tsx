@@ -6,12 +6,13 @@ import CategoryList from "@/components/CategoryList";
 import PlayGame from "@/components/PlayGame";
 import { styles } from "@/styles/styles";
 import Favorite from "@/components/Favorite";
+import Partnership from "@/components/user/partnership";
 
 export default function TabOneScreen() {
   const user = useAuthSession();
   return (
     <>
-    <ScrollView style={{ flex: 1, padding: 20, backgroundColor: "white" }}>
+    <ScrollView style={{ flex: 1, padding: 20, backgroundColor: "white" }} nestedScrollEnabled={true}>
       <Text style={stylesOverride.titleOverride}>Bienvenue {user.user?.firstName}</Text>
       <Text style={[styles.muted, styles.font4, styles.mt2]}>Prêt à te challenger ?</Text>
       <Search />
@@ -20,7 +21,7 @@ export default function TabOneScreen() {
       <Favorite />
       <View style={styles.hr} />
       <Text style={styles.subTitle}>Tendances</Text>
-      {/* <Partnership /> */}
+      <Partnership />
     </ScrollView>
     </>
   );

@@ -6,6 +6,8 @@ import {
   Pressable,
   StyleSheet,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { z } from "zod";
 import { UserApi } from "../api/userApi";
@@ -89,6 +91,11 @@ export default function Register({
   };
 
   return (
+    <KeyboardAvoidingView 
+    style={{ flex: 1, backgroundColor: "white" }}
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+  >
     <View style={styles.container}>
       <Text style={styles.title}>Créer un compte</Text>
 
@@ -172,6 +179,7 @@ export default function Register({
         <Text style={styles.loginLink}>Se connecter</Text>
       </Link>
     </View>
+    </KeyboardAvoidingView>
   );
 }
 

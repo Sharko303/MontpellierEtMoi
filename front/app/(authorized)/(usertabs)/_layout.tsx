@@ -35,6 +35,10 @@ export default function TabLayout() {
         },
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
+        headerTintColor: 'white',
+        headerStyle: {
+          backgroundColor: styles.bgPrimary.backgroundColor,
+        },
         headerShown: useClientOnlyValue(false, true),
       }}
     >
@@ -43,7 +47,7 @@ export default function TabLayout() {
         options={{
           title: "Accueil",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerRight: () => (
+          /* headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
                 {({ pressed }) => (
@@ -56,7 +60,7 @@ export default function TabLayout() {
                 )}
               </Pressable>
             </Link>
-          ),
+          ), */
         }}
       />
       <Tabs.Screen

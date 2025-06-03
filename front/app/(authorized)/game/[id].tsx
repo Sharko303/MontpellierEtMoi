@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Game from "@/components/Game";
-import { Text } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { GameApi } from "@/api/game";
 import { useSearchParams } from "expo-router/build/hooks";
 import { useAuthSession } from "@/context/UserContext";
 import { Toast } from "@/app/services/ToastService";
+import { Ionicons } from "@expo/vector-icons";
+import { styles } from "@/styles/styles";
+import { router } from "expo-router";
 
 export default function GameScreen() {
   const [game, setGame] = useState(null);
@@ -26,15 +29,33 @@ export default function GameScreen() {
     if (response.status == 200) {
       Toast.show(
         "success",
-        response.message || "Bravo vous avez gagné un code promo !"
+        "Bravo vous avez gagné un code promo !"
       );
+      return;
     } else {
-      Toast.show("danger", response.message || "Mauvaise réponse");
+      Toast.show("danger", response.message);
     }
   };
-  return game ? (
-    <Game game={game} onSubmitAnswer={handleSubmitAnswer} />
-  ) : (
-    <Text>Chargement...</Text>
+
+  const onGoBack = () => {
+    console.log("test")
+    router.back();
+  };
+  return (
+    <View style={styles.container}>
+      {/* Bouton de retour en haut à gauche */}
+      <TouchableOpacity 
+        style={styles.mt4}
+        onPress={onGoBack}
+      >
+        <Ionicons name="arrow-back" size={24} color="primary" style={styles.backButton} />
+      </TouchableOpacity>
+      
+      {game ? (
+        <Game game={game} onSubmitAnswer={handleSubmitAnswer} />
+      ) : (
+        <Text>Chargement...</Text>
+      )}
+    </View>
   );
 }

@@ -1,6 +1,7 @@
-import { CommercantApi } from '@/api/commerceApi';
-import { useAuthSession } from '@/context/UserContext';
-import React, { useState } from 'react';
+import { CommercantApi } from "@/api/commerceApi";
+import { Toast } from "@/app/services/ToastService";
+import { useAuthSession } from "@/context/UserContext";
+import React, { use, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,35 +12,70 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-} from 'react-native';
+} from "react-native";
+import { styles } from "@/styles/styles";
 
 const QRCodeGeneratorScreen = () => {
-  const [numberOfQRCodes, setNumberOfQRCodes] = useState('');
-  const [description, setDescription] = useState('');
-  const authSession = useAuthSession(); 
+  const [numberOfQRCodes, setNumberOfQRCodes] = useState("");
+  const [description, setDescription] = useState("");
+  const [remainingPromoCodes, setRemainingPromoCodes] = useState(0);
+  const authSession = useAuthSession();
+
+  useEffect(() => {
+    const fetchRemainingPromoCodes = async () => {
+      
+        const response = await CommercantApi.getRemainingPromoCodes(
+          authSession.user.id
+        );
+        if (response.error) {
+          Toast.show(
+            "danger",
+            response.message || "Erreur lors de la récupération des codes promo"
+          );
+          return;
+        }
+        setRemainingPromoCodes(response.remainingPromoCodes);
+      
+    };
+
+    fetchRemainingPromoCodes();
+  }, []);
 
   const handleGenerate = async () => {
     const number = parseInt(numberOfQRCodes);
     const data = { number, description, user: authSession.user };
     const response = await CommercantApi.createPromoCode(data);
-    if(response.error) {
-      Alert.alert('Erreur', response.error);
+
+    if (response.error) {
+      Toast.show("danger", response.message || "Code QR invalide");
       return;
     }
-    console.log('Succès', `Génération de ${number} QR codes en cours...`);
+    setRemainingPromoCodes(response.remainingPromoCodes);
+    console.log(response);
+    // on vide les champs
+    setNumberOfQRCodes("");
+    setDescription("");
+    Toast.show("success", response.message || "Code QR généré");
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={[styles.container, {backgroundColor: "white"}]}
     >
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.content}>
-          <Text style={styles.title}>Générateur de QR Codes</Text>
-          
+      <ScrollView contentContainerStyle={[styles.scrollContainer]}>
+        <View style={styles.right}>
+          <TouchableOpacity style={styles.buttonSolde}>
+            <Text style={[styles.textCenter, styles.bold]}>
+              SOLDE : {remainingPromoCodes}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <Text style={styles.title}>Générateur de Codes promo</Text>
+
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Nombre de QR codes à générer</Text>
+            <Text style={styles.label}>Nombre de Codes promo</Text>
             <TextInput
               style={styles.input}
               value={numberOfQRCodes}
@@ -62,71 +98,18 @@ const QRCodeGeneratorScreen = () => {
               numberOfLines={4}
             />
           </View>
-
-          <TouchableOpacity 
-            style={styles.generateButton}
-            onPress={handleGenerate}
-          >
-            <Text style={styles.generateButtonText}>Générer les QR Codes</Text>
-          </TouchableOpacity>
+          <View style={styles.center}>
+            <TouchableOpacity
+              style={[styles.btnCenter, styles.button]}
+              onPress={handleGenerate}
+            >
+              <Text style={styles.buttonText}>Générer les Codes promo</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  scrollContainer: {
-    flexGrow: 1,
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    textAlign: 'center',
-    color: '#333',
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 8,
-    color: '#333',
-  },
-  input: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    fontSize: 16,
-    color: '#333',
-  },
-  textArea: {
-    height: 100,
-    textAlignVertical: 'top',
-  },
-  generateButton: {
-    backgroundColor: 'blue',
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  generateButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
 
 export default QRCodeGeneratorScreen;

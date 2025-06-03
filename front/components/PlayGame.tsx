@@ -21,7 +21,7 @@ export default function PlayGame() {
         <TouchableOpacity
           style={[styles.btnPlay, styles.p2, styles.borderRounded, styles.mt2]}
           onPress={() => {
-            router.push("/game/1");
+            router.navigate("/game/1");
           }}
         >
           <Text style={[styles.textWhite, styles.textCenter, styles.font5]}>

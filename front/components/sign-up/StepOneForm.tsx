@@ -21,14 +21,10 @@ const StepOneForm = ({ control, nextStep }: Form) => {
   const [isSearching, setIsSearching] = useState(true);
 
   const handleSearchCommerce = async () => {
-    try {
       const result = await ShopApi.getShop();
       if (result) {
         setApiResult(result);
       }
-    } catch (error) {
-      console.error("Erreur lors de la recherche :", error);
-    }
   };
 
   useEffect(() => {

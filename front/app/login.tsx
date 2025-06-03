@@ -6,6 +6,8 @@ import {
   StyleProp,
   TextStyle,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { Link, useRouter } from "expo-router";
 import { Text, View } from "@/components/Themed";
@@ -25,7 +27,7 @@ const loginSchema = z.object({
 });
 
 export default function Login() {
-  const [email, setEmail] = useState("thibault@gmail.com");
+  const [email, setEmail] = useState("commercant@gmail.com");
   const [password, setPassword] = useState("thibault");
   const authSession = useAuthSession();
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
@@ -60,6 +62,11 @@ export default function Login() {
   };
 
   return (
+    <KeyboardAvoidingView 
+    style={{ flex: 1, backgroundColor: "white" }}
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+  >
     <View style={styles.container}>
       <Text style={styles.title}>Ma Ville & Moi</Text>
       {/* On affiche l'erreur si on n'arrive pas a ce connecter */}
@@ -108,6 +115,7 @@ export default function Login() {
         </Link>
       </View>
     </View>
+    </KeyboardAvoidingView>
   );
 }
 

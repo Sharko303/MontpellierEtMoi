@@ -40,7 +40,8 @@
           "cameraPermission": "Allow Montpellier to access your camera"
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

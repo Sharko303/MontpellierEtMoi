@@ -17,7 +17,7 @@ export default function Partnership() {
     /* SecureStore.deleteItemAsync("userToken"); */
 
     if (result && result) {
-      setApiResult(result); // On ne garde que les données utiles
+      setApiResult(result.slice(0, 10)); // On ne garde que les données utiles
     } else {
       console.error("Erreur : structure de réponse inattendue", result);
     }
@@ -33,7 +33,7 @@ export default function Partnership() {
 
   return (
     <>
-      <VirtualizedList
+    {/* <VirtualizedList
         renderItem={({ item }) => (
           <MerchantCard
             name={item.name}
@@ -44,7 +44,19 @@ export default function Partnership() {
         keyExtractor={(item) => item.id.toString()}
         getItemCount={getItemCount}
         getItem={getItem}
-      />
+      /> */}
+       <View>
+      {apiResult.map((item) => (
+        <MerchantCard
+          key={item.id.toString()}
+          name={item.name}
+          location={item.adresse}
+          imageUrl={item.picture}
+          isFavorite={item.isFavorite}
+          shopId={item.id}
+        />
+      ))}
+    </View>
     </>
   );
 }

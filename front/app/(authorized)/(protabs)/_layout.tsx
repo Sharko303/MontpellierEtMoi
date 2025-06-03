@@ -6,7 +6,7 @@ import Colors from "@/constants/Colors";
 import { StyleSheet } from "react-native";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
-import {COLORS} from "@/styles/styles";
+import { styles } from "@/styles/styles";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -21,14 +21,23 @@ export default function TabLayout() {
   return (
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-          // Disable the static render of the header on web
-          // to prevent a hydration error in React Navigation v6.
-          headerShown: useClientOnlyValue(false, true),
-          // on enleve (protabs) pour que le header soit visible
-          
+          tabBarActiveTintColor: styles.bgSecondary.backgroundColor,
+        tabBarInactiveTintColor: styles.textWhite.color,
+        tabBarStyle: {
+          backgroundColor: styles.bgPrimary.backgroundColor,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          paddingBottom: 5,
+        },
+        // Disable the static render of the header on web
+        // to prevent a hydration error in React Navigation v6.
+        headerTintColor: 'white',
+        headerStyle: {
+          backgroundColor: styles.bgPrimary.backgroundColor,
+        },
+        headerShown: useClientOnlyValue(false, true),
         }}
-        style={styles.background}
       >
         <Tabs.Screen
           name="index"
@@ -72,14 +81,9 @@ export default function TabLayout() {
           name="myvouchers"
           options={{
             title: "Mon magasin",
-            tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+            tabBarIcon: ({ color }) => <TabBarIcon name="shopping-bag" color={color} />,
           }}
         />
       </Tabs>
   );
 }
-const styles = StyleSheet.create({
-  background: {
-    backgroundColor: COLORS.primary,
-  },
-});
