@@ -49,14 +49,14 @@ export default function PromoCode() {
     switch (selectedFilter) {
       case "valid":
         return codePromo.filter(
-          (code) => code.valid && new Date(code.expiration) > new Date()
+          (code) => !code.valid && new Date(code.expiration) > new Date()
         );
       case "expired":
         return codePromo.filter(
-          (code) => new Date(code.expiration) < new Date() && code.valid
+          (code) => new Date(code.expiration) < new Date() && !code.valid
         );
       case "used":
-        return codePromo.filter((code) => !code.valid);
+        return codePromo.filter((code) => code.valid);
       default:
         return codePromo;
     }
@@ -137,7 +137,7 @@ export default function PromoCode() {
   );
 
   const getCodeStatus = (code) => {
-    if (!code.valid) return { status: "Utilisé", color: "#FFC067" };
+    if (code.valid) return { status: "Utilisé", color: "#FFC067" };
     if (new Date(code.expiration) < new Date())
       return { status: "Expiré", color: "#FF6B6B" };
     return { status: "Valide", color: "#7DC0AF" };

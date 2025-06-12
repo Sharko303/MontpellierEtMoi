@@ -35,7 +35,6 @@ export default class CodePromo {
                 message: "Code promo déjà utilisé",
             });
         }
-
         // on valid le code promo
         await prisma.promoCode.update({
             where: {
@@ -85,7 +84,6 @@ export default class CodePromo {
     }
 
     static getAllByMerchant = async (req: Request, res: Response) => {
-        console.log("back")
         const user = req.user;
         if(!user) {
             return res.status(401).json({
@@ -94,7 +92,6 @@ export default class CodePromo {
         }
         const userId = (user as { id: number }).id;
         
-        console.log(userId)
         const codePromos = await prisma.promoCode.findMany({
             where: {
                 merchantId: userId,

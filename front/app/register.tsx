@@ -13,6 +13,7 @@ import { z } from "zod";
 import { UserApi } from "../api/userApi";
 import { Link, router } from "expo-router";
 import { styles } from "@/styles/styles";
+import { Toast } from "./services/ToastService";
 
 // Définition du schéma de validation avec Zod
 const registerSchema = z
@@ -83,8 +84,10 @@ export default function Register({
           lastName,
         });
         console.log("Inscription réussie :", { email, password });
+        Toast.show("success", "Inscription réussie !");
         router.replace("/login"); // Redirige vers la page de connexion après inscription
       } catch (error) {
+        Toast.show("danger", "Erreur lors de l'inscription. Veuillez réessayer.");
         console.log(error);
       }
     }

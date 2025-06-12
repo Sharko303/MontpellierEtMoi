@@ -57,7 +57,7 @@ export default function Account() {
     // setIsScanning(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      const response = await CodePromo.get(data.data);
+      const response = await CodePromo.scan(data.data);
       console.log("response", response);
       if (response.error) {
         Toast.show("warning", response.message || "Code QR invalide");
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   backButton: {
-    backgroundColor: "blue",
+    backgroundColor: "#4558C8",
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
